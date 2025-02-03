@@ -1,9 +1,10 @@
 const router = require("express").Router();
 const pool = require("../db");
+const authorize = require("../middleware/authorize")
 
 //all todos and name
 
-router.get("/", async (req, res) => {
+router.get("/",authorize,  async (req, res) => {
   try {
     // const user = await pool.query(
     //   "SELECT user_name FROM users WHERE user_id = $1",
@@ -24,7 +25,7 @@ router.get("/", async (req, res) => {
 
 //create a todo
 
-router.post("/todos", async (req, res) => {
+router.post("/todos",authorize, async (req, res) => {
   try {
     console.log(req.body);
     const { description } = req.body;
@@ -41,7 +42,7 @@ router.post("/todos", async (req, res) => {
 
 //update a todo
 
-router.put("/todos/:id", async (req, res) => {
+router.put("/todos/:id",authorize, async (req, res) => {
   try {
     const { id } = req.params;
     const { description } = req.body;
@@ -62,7 +63,7 @@ router.put("/todos/:id", async (req, res) => {
 
 //delete a todo
 
-router.delete("/todos/:id", async (req, res) => {
+router.delete("/todos/:id",authorize, async (req, res) => {
   try {
     const { id } = req.params;
     const deleteTodo = await pool.query(
